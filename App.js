@@ -54,16 +54,16 @@ function HomeScreen() {
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        style={{ height: 40, justifyContent: "center" }}
+        style={{ height: 40, justifyContent: "center", alignItems: "center" }}
         onPress={addColor}
       >
-        <Text style={{ color: "red" }}>Add colour</Text>
+        <Text style={{ color: "black" }}>Add colour</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={{ height: 40, justifyContent: "center" }}
+        style={{ height: 40, justifyContent: "center", alignItems: "center" }}
         onPress={reset}
       >
-        <Text style={{ color: "red" }}>Reset</Text>
+        <Text style={{ color: "black" }}>Reset</Text>
       </TouchableOpacity>
 
       <FlatList style={styles.list} data={colorArray} renderItem={renderItem} />
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
-    backgroundColor: "lightcyan",
+    backgroundColor: "white",
 
     justifyContent: "center",
   },
