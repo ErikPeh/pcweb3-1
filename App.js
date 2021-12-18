@@ -100,4 +100,10 @@ const styles = StyleSheet.create({
 
     justifyContent: "center",
   },
+  detailText: {
+    fontSize: 30,
+    color: "white",
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });
