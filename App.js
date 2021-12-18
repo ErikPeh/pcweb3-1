@@ -6,11 +6,31 @@ import {
   View,
   FlatList,
   TouchableOpacity,
+  Button,
 } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import BlockRGB from "./components/BlockRGB";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+function DetailsScreen({ route }) {
+  const { red, green, blue } = route.params;
+
+  return (
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: `rgb(${red}, ${green}, ${blue})` },
+      ]}
+    >
+      <View style={{ padding: 30 }}>
+        <Text style={styles.detailText}>Red: {red}</Text>
+        <Text style={styles.detailText}>Green: {green}</Text>
+        <Text style={styles.detailText}>Blue: {blue}</Text>
+      </View>
+    </View>
+  );
+}
 
 const Stack = createStackNavigator();
 
@@ -19,16 +39,33 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Color List" component={HomeScreen} />
+        <Stack.Screen name="DetailsScreen" component={DetailsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
 
-function HomeScreen() {
+function HomeScreen({ navigation }) {
+  useEffect(() => {
+    console.log("useEffect");
+    navigation.setOptions({
+      headerRight: () => <Button onPress={addColor} title="Add Color" />,
+    });
+    navigation.setOptions({
+      headerLeft: () => <Button onPress={reset} title="Reset" />,
+    });
+  });
+
   const [colorArray, setColorArray] = useState([]);
 
   function renderItem({ item }) {
-    return <BlockRGB red={item.red} green={item.green} blue={item.blue} />;
+    return (
+      <TouchableOpacity
+        onPress={() => navigation.navigate("DetailsScreen", { ...item })}
+      >
+        <BlockRGB red={item.red} green={item.green} blue={item.blue} />
+      </TouchableOpacity>
+    );
   }
 
   function addColor() {
@@ -49,19 +86,6 @@ function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={{ height: 40, justifyContent: "center", alignItems: "center" }}
-        onPress={addColor}
-      >
-        <Text style={{ color: "black" }}>Add Colour</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{ height: 40, justifyContent: "center", alignItems: "center" }}
-        onPress={reset}
-      >
-        <Text style={{ color: "red" }}>Reset</Text>
-      </TouchableOpacity>
-
       <FlatList style={styles.list} data={colorArray} renderItem={renderItem} />
     </View>
   );
@@ -72,6 +96,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     backgroundColor: "white",
+    alignContent: "center",
 
     justifyContent: "center",
   },
